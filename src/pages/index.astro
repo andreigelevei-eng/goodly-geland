@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTA from '../components/CTA.astro';
+import { site } from '../data/site';
+---
+<BaseLayout title="Обзорник" description={site.description}>
+  <section class="hero">
+    <span class="badge">Обзоры обучающих материалов</span>
+    <h1>Помогаем разобраться, что внутри продукта и кому он подойдёт</h1>
+    <p class="lead">Обзорник собирает понятные разборы курсов, руководств и практических материалов: содержание, польза, кому подходит, какие задачи помогает закрыть.</p>
+  </section>
+
+  <section class="grid">
+    <article class="card">
+      <h2>Обзоры продуктов</h2>
+      <p>Кратко и по делу: что внутри, для кого материал, какие навыки развивает и когда стоит перейти к продукту.</p>
+      <a href="/products/">Смотреть продукты</a>
+    </article>
+    <article class="card">
+      <h2>SEO-статьи</h2>
+      <p>Полезные материалы по темам продуктов: тексты, маркетинг, продажи, саморазвитие и онлайн-бизнес.</p>
+      <a href="/articles/">Читать статьи</a>
+    </article>
+  </section>
+
+  <CTA text={site.defaultCtaText} url={site.goodlyStoreUrl} note="Откройте витрину магазина Geland на Goodly и выберите подходящий материал." />
+</BaseLayout>
