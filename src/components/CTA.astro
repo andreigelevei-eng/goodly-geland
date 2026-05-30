@@ -1,0 +1,16 @@
+---
+interface Props {
+  text: string;
+  url: string;
+  note?: string;
+}
+
+const { text, url, note } = Astro.props;
+---
+<section class="cta-block">
+  <div>
+    <h2>Готовы перейти к продукту?</h2>
+    {note && <p>{note}</p>}
+  </div>
+  <a class="cta-button" href={url} target="_blank" rel="nofollow noopener noreferrer">{text}</a>
+</section>
