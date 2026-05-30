@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTA from '../../components/CTA.astro';
+import { getCollection, render } from 'astro:content';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map((article) => ({ params: { slug: article.data.slug }, props: { article } }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const url = `${site.url}/articles/${article.data.slug}/`;
+---
+<BaseLayout title={article.data.title} description={article.data.description} canonical={url} robots={article.data.robots} keywords={article.data.keywords}>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.data.title,
+    description: article.data.description,
+    mainEntityOfPage: url,
+    datePublished: article.data.publishDate,
+    dateModified: article.data.updatedDate ?? article.data.publishDate,
+    publisher: {
+      '@type': 'Organization',
+      name: site.name,
+      url: site.url,
+    },
+  })} />
+  <section class="hero">
+    <span class="badge">{article.data.category}</span>
+    <h1>{article.data.title}</h1>
+    <p class="lead">{article.data.description}</p>
+  </section>
+  <article class="content">
+    <Content />
+  </article>
+  {article.data.ctaText && article.data.ctaUrl && (
+    <CTA text={article.data.ctaText} url={article.data.ctaUrl} note="Перейдите к продукту, если хотите изучить тему глубже." />
+  )}
+</BaseLayout>
