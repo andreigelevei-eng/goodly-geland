@@ -1,0 +1,2 @@
+# goodly-geland
+seo shop
