@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTA from '../../components/CTA.astro';
+import { getCollection, render } from 'astro:content';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products');
+  return products.map((product) => ({ params: { slug: product.data.slug }, props: { product } }));
+}
+
+const { product } = Astro.props;
+const { Content } = await render(product);
+const url = `${site.url}/products/${product.data.slug}/`;
+---
+<BaseLayout title={product.data.title} description={product.data.description} canonical={url} robots={product.data.robots} keywords={product.data.keywords}>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: product.data.title,
+    description: product.data.description,
+    mainEntityOfPage: url,
+    datePublished: product.data.publishDate,
+    dateModified: product.data.updatedDate ?? product.data.publishDate,
+    about: {
+      '@type': 'CreativeWork',
+      name: product.data.productName,
+      author: product.data.authorName ? { '@type': 'Person', name: product.data.authorName } : undefined,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: site.name,
+      url: site.url,
+    },
+  })} />
+  <section class="hero">
+    <span class="badge">{product.data.category}</span>
+    <h1>{product.data.title}</h1>
+    <p class="lead">{product.data.description}</p>
+  </section>
+  <article class="content">
+    <Content />
+  </article>
+  <CTA text={product.data.ctaText} url={product.data.ctaUrl} note="Подробности, условия покупки и доступ к материалу доступны на странице продукта." />
+</BaseLayout>
