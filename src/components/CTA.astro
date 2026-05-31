@@ -1,16 +1,66 @@
 ---
+import {
+  buildGoodlyStoreUrl,
+  buildGoodlyUtmContent,
+  type GoodlyCtaAngle,
+  type GoodlyCtaLocation,
+  type GoodlySourcePageType,
+} from '../utils/utm';
+
 interface Props {
   text: string;
-  url: string;
+  baseUrl: string;
+  productSlug: string;
+  sourcePageType: GoodlySourcePageType;
+  ctaLocation: GoodlyCtaLocation;
+  ctaAngle: GoodlyCtaAngle;
   note?: string;
+  title?: string;
 }
 
-const { text, url, note } = Astro.props;
+const {
+  text,
+  baseUrl,
+  productSlug,
+  sourcePageType,
+  ctaLocation,
+  ctaAngle,
+  note,
+  title = 'Готовы перейти к продукту?',
+} = Astro.props;
+
+const url = buildGoodlyStoreUrl({
+  baseUrl,
+  productSlug,
+  sourcePageType,
+  ctaLocation,
+  ctaAngle,
+});
+
+const utmContent = buildGoodlyUtmContent({
+  productSlug,
+  sourcePageType,
+  ctaLocation,
+  ctaAngle,
+});
 ---
 <section class="cta-block">
   <div>
-    <h2>Готовы перейти к продукту?</h2>
+    <h2>{title}</h2>
     {note && <p>{note}</p>}
   </div>
-  <a class="cta-button" href={url} target="_blank" rel="nofollow noopener noreferrer">{text}</a>
+  <a
+    class="cta-button"
+    href={url}
+    target="_blank"
+    rel="nofollow noopener noreferrer"
+    data-event="product_cta_click"
+    data-product-slug={productSlug}
+    data-source-page-type={sourcePageType}
+    data-cta-location={ctaLocation}
+    data-cta-angle={ctaAngle}
+    data-utm-content={utmContent}
+  >
+    {text}
+  </a>
 </section>
