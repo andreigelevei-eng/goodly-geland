@@ -19,12 +19,14 @@ Do **not** write public product pages yet.
 First, build a reusable research and content strategy scheme on the first 5 verified products:
 
 1. product fact extraction;
-2. target audience analysis;
+2. topic and target audience research;
 3. audience segmentation by intent and pain;
-4. offer/CTA logic;
-5. SEO and content cluster logic;
-6. analytics measurement plan;
-7. only after that — page structure and copywriting.
+4. reference analysis: what strong review/affiliate/product pages do structurally;
+5. competitor/SERP analysis by topic and intent;
+6. offer/CTA logic;
+7. SEO and content cluster logic;
+8. analytics measurement plan;
+9. only after that — page structure and copywriting.
 
 ## Products currently verified from page text
 
@@ -46,7 +48,7 @@ Status: started.
 
 ## Stage 2 — target audience analysis
 
-Status: next.
+Status: started.
 
 For each of the first 5 products, define:
 
@@ -61,7 +63,7 @@ For each of the first 5 products, define:
 
 ## Stage 3 — product-to-audience matrix
 
-Status: pending.
+Status: started.
 
 Create a matrix showing which products fit which audiences:
 
@@ -74,9 +76,56 @@ Create a matrix showing which products fit which audiences:
 - managers/leaders;
 - people focused on self-development and learning.
 
-## Stage 4 — analytics plan before publishing
+## Stage 4 — reference analysis
 
-Status: pending.
+Status: next.
+
+Before designing product pages, collect and analyze references:
+
+- review/affiliate pages with strong comparison structure;
+- digital product landing pages;
+- SEO article pages that move readers to product CTAs;
+- lead magnet landing pages;
+- pages that explain resale rights or PLR/MRR-style products clearly.
+
+For every reference, capture:
+
+- URL;
+- page type;
+- main structure;
+- CTA placement;
+- trust elements;
+- SEO elements;
+- what to borrow structurally;
+- what to avoid.
+
+Do not copy wording or design directly.
+
+## Stage 5 — competitor and SERP analysis
+
+Status: next.
+
+For each topic cluster, analyze search competitors and adjacent content:
+
+- viral videos / short video formulas;
+- personal growth without burnout;
+- faster learning / memory apps / speed reading;
+- emotional resilience for leaders;
+- writing templates / copywriting cheat sheets.
+
+For every cluster, capture:
+
+- dominant search intents;
+- competitor page types;
+- common headings and content gaps;
+- monetization/CTA patterns;
+- trust signals;
+- opportunities for a more useful review page;
+- keywords and article angles to test later.
+
+## Stage 6 — analytics plan before publishing
+
+Status: started.
 
 Before creating public SEO pages, define measurement events and analytics setup.
 
@@ -91,19 +140,19 @@ Minimum events:
 - scroll depth or engaged read signal;
 - source/medium capture for traffic quality.
 
-Analytics decisions needed:
+Analytics decisions:
 
-- which analytics system to use;
-- whether external scripts are allowed on GitHub Pages;
-- whether cookie/privacy text needs update;
-- event naming convention;
-- UTM convention for outbound Goodly links, if used.
+- all outbound Goodly links must include UTM;
+- choose analytics system later;
+- external scripts are not required for initial technical scaffold;
+- event naming convention is defined in `ANALYTICS_PLAN.md`;
+- UTM builder is mandatory in code.
 
-## Stage 5 — SEO structure after analysis
+## Stage 7 — SEO structure after research
 
 Status: pending.
 
-Only after audience and analytics stages:
+Only after audience, reference, competitor and analytics stages:
 
 - decide whether to publish product pages first or cluster articles first;
 - decide page templates;
@@ -126,4 +175,4 @@ Only after audience and analytics stages:
 
 ## Next action
 
-Create `AUDIENCE_ANALYSIS_FIRST_5.md` with a grounded target audience analysis for the first 5 verified products before writing any public pages.
+Create `REFERENCE_AND_COMPETITOR_RESEARCH.md` with the method, query map and first findings plan before writing any public product pages.
