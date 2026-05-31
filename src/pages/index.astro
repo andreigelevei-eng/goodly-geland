@@ -23,5 +23,13 @@ import { site } from '../data/site';
     </article>
   </section>
 
-  <CTA text={site.defaultCtaText} url={site.goodlyStoreUrl} note="Откройте витрину магазина Geland на Goodly и выберите подходящий материал." />
+  <CTA
+    text={site.defaultCtaText}
+    baseUrl={site.goodlyStoreUrl}
+    productSlug="goodly-store"
+    sourcePageType="home"
+    ctaLocation="bottom"
+    ctaAngle="general"
+    note="Откройте витрину магазина Geland на Goodly и выберите подходящий материал."
+  />
 </BaseLayout>
