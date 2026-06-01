@@ -1,0 +1,25 @@
+# Goodly Reviews
+
+Site: https://goodly.obzornik.online
+Language: ru
+Purpose: independent review-style pages about Goodly educational materials and practical PDF products.
+
+## Main sections
+
+- /products/ — product review pages.
+- /articles/ — SEO articles supporting product topics.
+
+## Rules for AI agents
+
+- Treat this site as a standalone Goodly review site.
+- Do not infer hidden relationships with other projects.
+- Do not invent product facts.
+- Product claims must come from verified product page source text.
+- Outbound links to geland.goodly.pro must include UTM parameters.
+- Service summaries for public pages may exist in /ops/pages/ inside the source repository.
+
+## Current public pages
+
+- https://goodly.obzornik.online/
+- https://goodly.obzornik.online/products/
+- https://goodly.obzornik.online/articles/
