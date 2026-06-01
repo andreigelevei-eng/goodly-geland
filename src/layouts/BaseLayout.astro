@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { site } from '../data/site';
+import YandexMetrica from '../components/YandexMetrica.astro';
 
 interface Props {
   title: string;
@@ -27,6 +28,7 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, site.url).toString
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
+    <YandexMetrica />
   </head>
   <body>
     <header class="site-header">
