@@ -25,7 +25,6 @@ const url = `${site.url}/products/${product.data.slug}/`;
     about: {
       '@type': 'CreativeWork',
       name: product.data.productName,
-      author: product.data.authorName ? { '@type': 'Person', name: product.data.authorName } : undefined,
     },
     publisher: {
       '@type': 'Organization',
@@ -41,5 +40,13 @@ const url = `${site.url}/products/${product.data.slug}/`;
   <article class="content">
     <Content />
   </article>
-  <CTA text={product.data.ctaText} url={product.data.ctaUrl} note="Подробности, условия покупки и доступ к материалу доступны на странице продукта." />
+  <CTA
+    text={product.data.ctaText}
+    baseUrl={product.data.productBaseUrl}
+    productSlug={product.data.productSlug}
+    sourcePageType="product_page"
+    ctaLocation="bottom"
+    ctaAngle="topic_value"
+    note="Подробности, условия покупки и доступ к материалу доступны на странице продукта."
+  />
 </BaseLayout>
