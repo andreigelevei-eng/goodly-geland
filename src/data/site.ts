@@ -4,4 +4,5 @@ export const site = {
   url: 'https://goodly.obzornik.online',
   goodlyStoreUrl: 'https://geland.goodly.pro/store/1c2hmudh',
   defaultCtaText: 'Перейти в магазин Geland',
+  yandexMetricaCounterId: 106955372,
 };
