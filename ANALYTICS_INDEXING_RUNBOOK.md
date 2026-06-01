@@ -5,6 +5,24 @@ Repository: `andreigelevei-eng/goodly-geland`
 Public site: `https://goodly.obzornik.online`
 Status: required before writing/publishing product pages
 
+## Chosen tracking architecture
+
+Use a **minimal Google setup**:
+
+- Google Search Console: yes, for Google indexing/search data only.
+- Google Analytics 4: no.
+- Google Tag Manager: no.
+- Google tracking scripts on the public site: no.
+
+Primary analytics and behavior tracking:
+
+- Yandex Metrica.
+
+Primary Russian search/indexing tools:
+
+- Yandex Webmaster.
+- IndexNow where appropriate.
+
 ## Goal
 
 Before publishing SEO/product pages, the site needs an observation loop:
@@ -20,9 +38,10 @@ Before publishing SEO/product pages, the site needs an observation loop:
 
 ### Required
 
-1. Google Search Console
-   - Property: `https://goodly.obzornik.online/` or DNS/domain property if possible.
-   - Purpose: Google indexing, queries, impressions, clicks, CTR, average position, sitemap status, URL inspection.
+1. Google Search Console, minimal mode
+   - Property: `https://goodly.obzornik.online/` URL-prefix property or DNS/domain property if Андрей prefers DNS verification.
+   - Purpose: Google indexing status, Google search queries, impressions, clicks, CTR, average position, sitemap status, URL inspection.
+   - No GA4, no GTM, no Google analytics script.
 
 2. Yandex Webmaster
    - Host: `https://goodly.obzornik.online/`.
@@ -35,15 +54,14 @@ Before publishing SEO/product pages, the site needs an observation loop:
 4. GitHub Pages / Astro build
    - Purpose: stable static output, sitemap generation, canonical URLs.
 
-### Optional but useful
+### Optional but not selected now
 
 5. GA4
-   - Purpose: Google-side campaign analytics and event reporting.
-   - Use only if Андрей wants Google analytics in addition to Yandex Metrica.
+   - Not used at this stage.
+   - Do not add GA4 script or measurement ID unless explicitly approved later.
 
 6. Plausible / Umami
-   - Purpose: lightweight event analytics.
-   - Use only if privacy-friendly analytics is preferred.
+   - Optional later, not required for first stage.
 
 7. Bing Webmaster Tools
    - Optional later, not required for first stage.
@@ -61,27 +79,63 @@ If automation is added later, secrets must live in:
 Allowed public values:
 
 - public Metrica counter ID if embedded on site;
-- public GA measurement ID if GA4 is approved;
+- Google Search Console HTML verification file or meta tag only if Андрей chooses that verification method;
 - sitemap URL;
 - page URLs;
 - non-secret status summaries.
 
 ## What must be installed or configured
 
-### 1. Google Search Console
+### 1. Google Search Console — minimal mode
 
-Manual setup:
+Manual setup options:
 
-1. Add property for `goodly.obzornik.online`.
-2. Verify ownership using DNS or HTML file/meta tag.
-3. Submit sitemap: `https://goodly.obzornik.online/sitemap-index.xml` or actual Astro sitemap URL.
-4. Enable Search Console API in Google Cloud if automated reporting is needed.
-5. Configure OAuth 2.0 access with read-only scope when possible.
+#### Preferred option A — DNS verification
+
+1. Add a Search Console property.
+2. Choose Domain property if verifying the whole domain, or URL-prefix if verifying only `https://goodly.obzornik.online/`.
+3. Add the TXT record provided by Google to DNS.
+4. Keep the DNS record after verification.
+5. Submit sitemap after site pages are ready.
+
+Pros:
+
+- no Google code on the site;
+- stable verification;
+- good long-term option.
+
+Cons:
+
+- requires DNS access.
+
+#### Option B — HTML file verification
+
+1. Add a URL-prefix property for `https://goodly.obzornik.online/`.
+2. Download the verification HTML file from Search Console.
+3. Commit it unchanged into `public/` so it is published at the exact root URL Google requests.
+4. Verify in Search Console.
+5. Keep the file in `public/` permanently.
+
+Pros:
+
+- no Google analytics/tracking script;
+- easy with GitHub Pages.
+
+Cons:
+
+- Андрей must provide the exact verification file name and content.
+
+#### Option C — HTML meta tag verification
+
+Allowed only if Андрей provides the exact meta tag.
+
+This adds a single verification meta tag in `<head>`, not analytics.
 
 Important:
 
 - Google Indexing API must **not** be used for normal Goodly product/article pages. Google documents it for JobPosting and livestreaming VideoObject pages only.
 - For normal pages, use sitemap submission, internal links, canonical URLs, manual URL inspection when needed, and Search Console reports.
+- Search Console verification does not require GA4 or GTM.
 
 ### 2. Yandex Webmaster
 
@@ -120,6 +174,7 @@ Required before public product page publishing:
 - `/.well-known/agent-description.md` for agent-readable operating rules.
 - optional `search-index.json` for agent/local search.
 - service page summaries in `ops/pages/`.
+- optional Google Search Console HTML verification file in `public/`, only if that method is chosen.
 
 ## Deployment flow
 
@@ -133,8 +188,9 @@ For each publish/update:
 6. Record changed URLs.
 7. Submit or refresh sitemap in Google Search Console if needed.
 8. Submit changed URLs to Yandex recrawl if quota allows.
-9. Update the service summary file for each changed page.
-10. After data delay, update metrics: impressions, clicks, CTR, position, index status, top queries.
+9. Submit changed URLs through IndexNow if configured.
+10. Update the service summary file for each changed page.
+11. After data delay, update metrics: impressions, clicks, CTR, position, index status, top queries.
 
 ## Page service summary model
 
@@ -194,11 +250,16 @@ page:
     utm_required: true
     links: []
   analytics:
+    primary_tool: yandex_metrica
     events: []
     metrica_goals: []
+    ga4_enabled: false
     ga4_events: []
   indexing:
     google:
+      tracking_tool: search_console_only
+      ga4_enabled: false
+      gtm_enabled: false
       submitted_sitemap: false
       indexed_status: unknown
       last_checked:
@@ -214,6 +275,10 @@ page:
       indexed_status: unknown
       last_checked:
       top_queries: []
+    indexnow:
+      enabled: false
+      submitted: false
+      last_submitted:
   change_log: []
   next_action:
 ```
@@ -265,31 +330,34 @@ All Goodly outbound clicks must include:
 - Refresh service summary.
 - Decide: keep, improve, add supporting article, or change internal links.
 
-## What I need from Андрей before connecting real analytics
+## What I need from Андрей before connecting real analytics/indexing
 
-1. Confirm which analytics tool to use first:
-   - Yandex Metrica only;
-   - Yandex Metrica + GA4;
-   - Yandex Metrica + Plausible/Umami;
-   - all of the above later.
-2. Create/confirm access to Google Search Console for `goodly.obzornik.online`.
-3. Create/confirm access to Yandex Webmaster for `goodly.obzornik.online`.
-4. Create Yandex Metrica counter and provide public counter ID.
-5. Decide if GA4 is needed now; if yes, provide measurement ID.
-6. Confirm privacy/cookie wording before scripts are embedded.
+1. Create/confirm Google Search Console property for `goodly.obzornik.online`.
+2. Choose GSC verification method:
+   - DNS TXT record, preferred; or
+   - HTML file; or
+   - HTML meta tag.
+3. If HTML file/meta method is chosen, provide the exact verification file or meta tag.
+4. Create/confirm access to Yandex Webmaster for `goodly.obzornik.online`.
+5. Create Yandex Metrica counter and provide public counter ID.
+6. Confirm privacy/cookie wording before Metrica script is embedded.
 
-## What I will do after analytics access exists
+## What I will do after analytics/indexing inputs exist
 
-1. Add public counter IDs to site config.
-2. Add analytics script component conditionally.
-3. Add event dispatch for CTA clicks and scroll depth.
-4. Keep UTM builder as the source of truth for outbound links.
-5. Create `ops/pages/<slug>.md` for every public page.
-6. Keep page summaries updated after publish and after index/performance checks.
+1. Add public Metrica counter ID to site config.
+2. Add Metrica script component conditionally.
+3. Add GSC verification file/meta only if that method is chosen.
+4. Add event dispatch for CTA clicks and scroll depth.
+5. Keep UTM builder as the source of truth for outbound links.
+6. Create `ops/pages/<slug>.md` for every public page.
+7. Keep page summaries updated after publish and after index/performance checks.
 
 ## What I will not do
 
 - I will not commit secrets.
+- I will not add GA4 unless explicitly requested later.
+- I will not add Google Tag Manager unless explicitly requested later.
+- I will not add Google tracking scripts in the current stage.
 - I will not use Google Indexing API for normal product/article pages.
 - I will not publish clean outbound Goodly links.
 - I will not claim indexation is guaranteed.
